@@ -8,11 +8,14 @@ public class BirdMoviment : MonoBehaviour {
 	private bool isDead = false;
 	private Rigidbody2D rb2d;
 	private Animator anim;
+	private AudioSource audio;
+	public AudioClip morreu;
 
 	// Use this for initialization
 	void Start () {
 		rb2d = GetComponent<Rigidbody2D> ();
 		anim = GetComponent<Animator> ();
+		audio = GetComponent<AudioSource> ();
 	}
 	
 	// Update is called once per frame
@@ -20,6 +23,7 @@ public class BirdMoviment : MonoBehaviour {
 		if(isDead == false){
 			if (Input.GetMouseButtonDown (0)) {
 				rb2d.velocity = Vector2.zero;
+				audio.Play();
 				rb2d.AddForce (new Vector2(0,upForce));
 				anim.SetTrigger ("Flap");
 			}	
@@ -30,6 +34,8 @@ public class BirdMoviment : MonoBehaviour {
 		rb2d.velocity = Vector2.zero;
 		isDead = true;
 		anim.SetTrigger ("Die");
+		audio.clip = morreu;
+		audio.Play ();
 		GameControl.instance.BirdDied ();
 	}
 }
